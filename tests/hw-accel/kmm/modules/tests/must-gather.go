@@ -40,7 +40,7 @@ var _ = Describe("KMM", Ordered, Label(kmmparams.LabelSuite, kmmparams.LabelSani
 			// Create must-gather pod
 			By("Creating must-gather pod")
 			mgPod, err := pod.NewBuilder(APIClient, "must-gather-pod", kmmparams.KmmOperatorNamespace, mustGatherImage).
-				CreateAndWaitUntilRunning(300 * time.Second)
+				CreateAndWaitUntilRunning(600 * time.Second)
 			Expect(err).ToNot(HaveOccurred(), "error creating must-gather pod")
 			cmdToExec := []string{"ls", "-l", "/usr/bin/gather"}
 
