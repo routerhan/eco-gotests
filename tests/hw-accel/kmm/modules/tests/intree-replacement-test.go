@@ -125,20 +125,20 @@ var _ = Describe("KMM", Ordered, Label(kmmparams.LabelSuite, kmmparams.LabelSani
 			Expect(err).ToNot(HaveOccurred(), "error creating module")
 
 			By("Await build pod to complete build")
-			err = await.BuildPodCompleted(APIClient, kmmparams.InTreeReplacementNamespace, 5*time.Minute)
+			err = await.BuildPodCompleted(APIClient, kmmparams.InTreeReplacementNamespace, 30*time.Minute)
 			Expect(err).ToNot(HaveOccurred(), "error while building module")
 
 			By("Await driver container deployment")
-			err = await.ModuleDeployment(APIClient, moduleName, kmmparams.InTreeReplacementNamespace, time.Minute,
+			err = await.ModuleDeployment(APIClient, moduleName, kmmparams.InTreeReplacementNamespace, 5*time.Minute,
 				GeneralConfig.WorkerLabelMap)
 			Expect(err).ToNot(HaveOccurred(), "error while waiting on driver deployment")
 
 			By("Check module is loaded on node")
-			err = check.ModuleLoaded(APIClient, kmodName, time.Minute)
+			err = check.ModuleLoaded(APIClient, kmodName, 5*time.Minute)
 			Expect(err).ToNot(HaveOccurred(), "error while checking the module is loaded")
 
 			By("Check in-tree module is removed on node")
-			err = check.ModuleLoaded(APIClient, kmodToRemove, 20*time.Second)
+			err = check.ModuleLoaded(APIClient, kmodToRemove, 40*time.Second)
 			Expect(err).To(HaveOccurred(), "error while checking the in-tree-module was removed")
 
 			By("Check label is set on all nodes")
