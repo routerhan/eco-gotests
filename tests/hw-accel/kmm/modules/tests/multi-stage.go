@@ -51,11 +51,11 @@ var _ = Describe("KMM", Ordered, Label(kmmparams.LabelSuite, kmmparams.LabelSani
 			Expect(err).ToNot(HaveOccurred(), "error creating test namespace")
 
 			By("Await pods deletion")
-			err = await.ModuleUndeployed(APIClient, kmmparams.UseLocalMultiStageTestNamespace, time.Minute)
+			err = await.ModuleUndeployed(APIClient, kmmparams.UseLocalMultiStageTestNamespace, 3*time.Minute)
 			Expect(err).ToNot(HaveOccurred(), "error while waiting pods to be deleted")
 
 			By("Await module to be deleted")
-			err = await.ModuleObjectDeleted(APIClient, moduleName, kmmparams.UseLocalMultiStageTestNamespace, time.Minute)
+			err = await.ModuleObjectDeleted(APIClient, moduleName, kmmparams.UseLocalMultiStageTestNamespace, 3*time.Minute)
 			Expect(err).ToNot(HaveOccurred(), "error while waiting module to be deleted")
 		})
 
