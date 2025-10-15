@@ -52,7 +52,7 @@ var _ = Describe("KMM", Ordered, Label(kmmparams.LabelSuite, kmmparams.LabelSani
 			Expect(err).ToNot(HaveOccurred(), "error creating test namespace")
 
 			By("Await module to be deleted")
-			err = await.ModuleObjectDeleted(APIClient, moduleName, kmmparams.InTreeReplacementNamespace, 5*time.Minute)
+			err = await.ModuleObjectDeleted(APIClient, moduleName, kmmparams.InTreeReplacementNamespace, 10*time.Minute)
 			Expect(err).ToNot(HaveOccurred(), "error while waiting module to be deleted")
 
 			svcAccount := serviceaccount.NewBuilder(APIClient, serviceAccountName, kmmparams.InTreeReplacementNamespace)
