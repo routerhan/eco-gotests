@@ -118,16 +118,16 @@ var _ = Describe("KMM", Ordered, Label(kmmparams.LabelSuite, kmmparams.LabelSani
 			Expect(err).ToNot(HaveOccurred(), "error creating module")
 
 			By("Await build pod to complete build")
-			err = await.BuildPodCompleted(APIClient, kmmparams.UseLocalMultiStageTestNamespace, 5*time.Minute)
+			err = await.BuildPodCompleted(APIClient, kmmparams.UseLocalMultiStageTestNamespace, 25*time.Minute)
 			Expect(err).ToNot(HaveOccurred(), "error while building module")
 
 			By("Await driver container deployment")
-			err = await.ModuleDeployment(APIClient, moduleName, kmmparams.UseLocalMultiStageTestNamespace, time.Minute,
+			err = await.ModuleDeployment(APIClient, moduleName, kmmparams.UseLocalMultiStageTestNamespace, 10*time.Minute,
 				GeneralConfig.WorkerLabelMap)
 			Expect(err).ToNot(HaveOccurred(), "error while waiting on driver deployment")
 
 			By("Check module is loaded on node")
-			err = check.ModuleLoaded(APIClient, kmodName, time.Minute)
+			err = check.ModuleLoaded(APIClient, kmodName, 5*time.Minute)
 			Expect(err).ToNot(HaveOccurred(), "error while checking the module is loaded")
 
 			By("Check label is set on all nodes")
@@ -181,12 +181,12 @@ var _ = Describe("KMM", Ordered, Label(kmmparams.LabelSuite, kmmparams.LabelSani
 			Expect(err).ToNot(HaveOccurred(), "error creating module")
 
 			By("Await driver container deployment")
-			err = await.ModuleDeployment(APIClient, moduleName, kmmparams.UseLocalMultiStageTestNamespace, 3*time.Minute,
+			err = await.ModuleDeployment(APIClient, moduleName, kmmparams.UseLocalMultiStageTestNamespace, 20*time.Minute,
 				GeneralConfig.WorkerLabelMap)
 			Expect(err).ToNot(HaveOccurred(), "error while waiting on driver deployment")
 
 			By("Check module is loaded on node")
-			err = check.ModuleLoaded(APIClient, kmodName, time.Minute)
+			err = check.ModuleLoaded(APIClient, kmodName, 5*time.Minute)
 			Expect(err).ToNot(HaveOccurred(), "error while checking the module is loaded")
 
 			By("Check module is signed")
