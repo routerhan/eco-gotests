@@ -220,7 +220,7 @@ var _ = Describe("KMM", Ordered, Label(kmmparams.LabelSuite, kmmparams.LabelSani
 			Expect(err).NotTo(HaveOccurred(), "preflightvalidationocp did not complete")
 
 			By("Await build pod to complete build (if any)")
-			err = await.BuildPodCompleted(APIClient, kmmparams.UseDtkModuleTestNamespace, 5*time.Minute)
+			err = await.BuildPodCompleted(APIClient, kmmparams.UseDtkModuleTestNamespace, 3*time.Minute)
 			if err != nil {
 				glog.V(kmmparams.KmmLogLevel).Infof("No build pod found or completed: %s", err)
 			}
@@ -265,7 +265,7 @@ var _ = Describe("KMM", Ordered, Label(kmmparams.LabelSuite, kmmparams.LabelSani
 			Expect(err).NotTo(HaveOccurred(), "preflightvalidationocp did not complete")
 
 			By("Await build pod to complete build (if any)")
-			err = await.BuildPodCompleted(APIClient, kmmparams.UseDtkModuleTestNamespace, 10*time.Minute)
+			err = await.BuildPodCompleted(APIClient, kmmparams.UseDtkModuleTestNamespace, 3*time.Minute)
 			if err != nil {
 				glog.V(kmmparams.KmmLogLevel).Infof("No build pod found or completed: %s", err)
 			}
