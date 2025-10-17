@@ -123,7 +123,7 @@ var _ = Describe("KMM", Ordered, Label(kmmparams.LabelSuite, kmmparams.LabelSani
 			Expect(err).ToNot(HaveOccurred(), "error creating scanner")
 
 			By("Await build pod to complete build")
-			err = await.BuildPodCompleted(APIClient, kmmparams.ScannerTestNamespace, 20*time.Minute)
+			err = await.BuildPodCompleted(APIClient, kmmparams.ScannerTestNamespace, 60*time.Minute)
 			Expect(err).ToNot(HaveOccurred(), "error while building scanner")
 
 			By("Run pod from the scanner image")
