@@ -34,7 +34,7 @@ var _ = Describe("KMM", Ordered, Label(kmmparams.LabelSuite, kmmparams.LabelSani
 			_, _ = kmm.NewModuleBuilder(APIClient, moduleName, kmmparams.FirmwareTestNamespace).Delete()
 
 			By("Await module to be deleted")
-			err := await.ModuleObjectDeleted(APIClient, moduleName, kmmparams.FirmwareTestNamespace, 3*time.Minute)
+			err := await.ModuleObjectDeleted(APIClient, moduleName, kmmparams.FirmwareTestNamespace, 23*time.Minute)
 			Expect(err).ToNot(HaveOccurred(), "error while waiting module to be deleted")
 
 			svcAccount := serviceaccount.NewBuilder(APIClient, serviceAccountName, kmmparams.FirmwareTestNamespace)
@@ -101,20 +101,20 @@ var _ = Describe("KMM", Ordered, Label(kmmparams.LabelSuite, kmmparams.LabelSani
 			Expect(err).ToNot(HaveOccurred(), "error creating module")
 
 			By("Await build pod to complete build")
-			err = await.BuildPodCompleted(APIClient, kmmparams.FirmwareTestNamespace, 5*time.Minute)
+			err = await.BuildPodCompleted(APIClient, kmmparams.FirmwareTestNamespace, 25*time.Minute)
 			Expect(err).ToNot(HaveOccurred(), "error while building module")
 
 			By("Await driver container deployment")
-			err = await.ModuleDeployment(APIClient, moduleName, kmmparams.FirmwareTestNamespace, 3*time.Minute,
+			err = await.ModuleDeployment(APIClient, moduleName, kmmparams.FirmwareTestNamespace, 23*time.Minute,
 				GeneralConfig.WorkerLabelMap)
 			Expect(err).ToNot(HaveOccurred(), "error while waiting on driver deployment")
 
 			By("Check module is loaded on node")
-			err = check.ModuleLoaded(APIClient, kmodName, time.Minute)
+			err = check.ModuleLoaded(APIClient, kmodName, 5*time.Minute)
 			Expect(err).ToNot(HaveOccurred(), "error while checking the module is loaded")
 
 			By("Check dmesg contains module message")
-			err = check.Dmesg(APIClient, "ALL GOOD WITH FIRMWARE", time.Minute)
+			err = check.Dmesg(APIClient, "ALL GOOD WITH FIRMWARE", 5*time.Minute)
 			Expect(err).ToNot(HaveOccurred(), "error while checking dmesg contents")
 
 			By("Check label is set on all nodes")

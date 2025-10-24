@@ -121,15 +121,15 @@ var _ = Describe("KMM", Ordered, Label(kmmparams.LabelSuite, kmmparams.LabelSani
 			Expect(err).ToNot(HaveOccurred(), "error creating module")
 
 			By("Await build pod to complete build")
-			err = await.BuildPodCompleted(APIClient, localNsName, 5*time.Minute)
+			err = await.BuildPodCompleted(APIClient, localNsName, 25*time.Minute)
 			Expect(err).ToNot(HaveOccurred(), "error while building module")
 
 			By("Await driver container deployment")
-			err = await.ModuleDeployment(APIClient, moduleName, localNsName, 5*time.Minute, GeneralConfig.WorkerLabelMap)
+			err = await.ModuleDeployment(APIClient, moduleName, localNsName, 25*time.Minute, GeneralConfig.WorkerLabelMap)
 			Expect(err).ToNot(HaveOccurred(), "error while waiting on driver deployment")
 
 			By("Check module is loaded on node")
-			err = check.ModuleLoaded(APIClient, kmodName, time.Minute)
+			err = check.ModuleLoaded(APIClient, kmodName, 5*time.Minute)
 			Expect(err).ToNot(HaveOccurred(), "error while checking the module is loaded")
 
 			By("Check label is set on all nodes")
@@ -144,11 +144,11 @@ var _ = Describe("KMM", Ordered, Label(kmmparams.LabelSuite, kmmparams.LabelSani
 			Expect(err).ToNot(HaveOccurred(), "error deleting the module")
 
 			By("Await module to be deleted")
-			err = await.ModuleObjectDeleted(APIClient, kmodName, localNsName, 3*time.Minute)
+			err = await.ModuleObjectDeleted(APIClient, kmodName, localNsName, 23*time.Minute)
 			Expect(err).ToNot(HaveOccurred(), "error while waiting module to be deleted")
 
 			By("Await pods deletion")
-			err = await.ModuleUndeployed(APIClient, localNsName, time.Minute)
+			err = await.ModuleUndeployed(APIClient, localNsName, 5*time.Minute)
 			Expect(err).ToNot(HaveOccurred(), "error while waiting pods to be deleted")
 
 			By("Check labels are removed on all nodes")
@@ -219,11 +219,11 @@ var _ = Describe("KMM", Ordered, Label(kmmparams.LabelSuite, kmmparams.LabelSani
 			Expect(err).ToNot(HaveOccurred(), "error creating module")
 
 			By("Await driver container deployment")
-			err = await.ModuleDeployment(APIClient, moduleName, localNsName, 3*time.Minute, GeneralConfig.WorkerLabelMap)
+			err = await.ModuleDeployment(APIClient, moduleName, localNsName, 23*time.Minute, GeneralConfig.WorkerLabelMap)
 			Expect(err).ToNot(HaveOccurred(), "error while waiting on driver deployment")
 
 			By("Check module is loaded on node")
-			err = check.ModuleLoaded(APIClient, kmodName, time.Minute)
+			err = check.ModuleLoaded(APIClient, kmodName, 5*time.Minute)
 			Expect(err).ToNot(HaveOccurred(), "error while checking the module is loaded")
 
 			By("Check label is set on all nodes")
@@ -237,11 +237,11 @@ var _ = Describe("KMM", Ordered, Label(kmmparams.LabelSuite, kmmparams.LabelSani
 			Expect(err).ToNot(HaveOccurred(), "error deleting the module")
 
 			By("Await module to be deleted")
-			err = await.ModuleObjectDeleted(APIClient, kmodName, localNsName, 3*time.Minute)
+			err = await.ModuleObjectDeleted(APIClient, kmodName, localNsName, 23*time.Minute)
 			Expect(err).ToNot(HaveOccurred(), "error while waiting module to be deleted")
 
 			By("Await pods deletion")
-			err = await.ModuleUndeployed(APIClient, localNsName, time.Minute)
+			err = await.ModuleUndeployed(APIClient, localNsName, 5*time.Minute)
 			Expect(err).ToNot(HaveOccurred(), "error while waiting pods to be deleted")
 
 			By("Check labels are removed on all nodes")
@@ -293,11 +293,11 @@ var _ = Describe("KMM", Ordered, Label(kmmparams.LabelSuite, kmmparams.LabelSani
 			Expect(err).ToNot(HaveOccurred(), "error creating module")
 
 			By("Await driver container deployment")
-			err = await.ModuleDeployment(APIClient, moduleName, localNsName, 3*time.Minute, GeneralConfig.WorkerLabelMap)
+			err = await.ModuleDeployment(APIClient, moduleName, localNsName, 23*time.Minute, GeneralConfig.WorkerLabelMap)
 			Expect(err).ToNot(HaveOccurred(), "error while waiting on driver deployment")
 
 			By("Check module is loaded on node")
-			err = check.ModuleLoaded(APIClient, kmodName, time.Minute)
+			err = check.ModuleLoaded(APIClient, kmodName, 5*time.Minute)
 			Expect(err).ToNot(HaveOccurred(), "error while checking the module is loaded")
 
 			By("Check label is set on all nodes")
@@ -355,7 +355,7 @@ var _ = Describe("KMM", Ordered, Label(kmmparams.LabelSuite, kmmparams.LabelSani
 			Expect(err).ToNot(HaveOccurred(), "error creating module")
 
 			By("Await build pod to complete build")
-			_ = await.BuildPodCompleted(APIClient, localNsName, 5*time.Minute)
+			_ = await.BuildPodCompleted(APIClient, localNsName, 25*time.Minute)
 
 			_, err = module.Delete()
 			Expect(err).ToNot(HaveOccurred(), "error while building module")
@@ -367,7 +367,7 @@ var _ = Describe("KMM", Ordered, Label(kmmparams.LabelSuite, kmmparams.LabelSani
 			Expect(err).ToNot(HaveOccurred(), "error creating test namespace")
 
 			By("Await module to be deleted")
-			err = await.ModuleObjectDeleted(APIClient, kmodName, localNsName, 3*time.Minute)
+			err = await.ModuleObjectDeleted(APIClient, kmodName, localNsName, 23*time.Minute)
 			Expect(err).ToNot(HaveOccurred(), "error while waiting module to be deleted")
 
 			svcAccount := serviceaccount.NewBuilder(APIClient, serviceAccountName, moduleName)

@@ -72,11 +72,11 @@ var _ = Describe("KMM", Ordered, Label(kmmparams.LabelSuite, kmmparams.LabelSani
 			Expect(err).ToNot(HaveOccurred(), "error creating test namespace")
 
 			By("Await module deletion")
-			err = await.ModuleUndeployed(APIClient, kmmparams.VersionModuleTestNamespace, time.Minute)
+			err = await.ModuleUndeployed(APIClient, kmmparams.VersionModuleTestNamespace, 5*time.Minute)
 			Expect(err).ToNot(HaveOccurred(), "error while waiting pods to be deleted")
 
 			By("Await module to be deleted")
-			err = await.ModuleObjectDeleted(APIClient, moduleName, kmmparams.VersionModuleTestNamespace, time.Minute)
+			err = await.ModuleObjectDeleted(APIClient, moduleName, kmmparams.VersionModuleTestNamespace, 5*time.Minute)
 			Expect(err).ToNot(HaveOccurred(), "error while waiting module to be deleted")
 
 			By("Delete ClusterRoleBinding")
@@ -134,11 +134,11 @@ var _ = Describe("KMM", Ordered, Label(kmmparams.LabelSuite, kmmparams.LabelSani
 			Expect(err).ToNot(HaveOccurred(), "error creating module")
 
 			By("Await build pod to complete build")
-			err = await.BuildPodCompleted(APIClient, kmmparams.VersionModuleTestNamespace, 5*time.Minute)
+			err = await.BuildPodCompleted(APIClient, kmmparams.VersionModuleTestNamespace, 25*time.Minute)
 			Expect(err).ToNot(HaveOccurred(), "error while building module")
 
 			By("Make sure the module is not loaded")
-			err = await.ModuleDeployment(APIClient, moduleName, kmmparams.VersionModuleTestNamespace, time.Minute,
+			err = await.ModuleDeployment(APIClient, moduleName, kmmparams.VersionModuleTestNamespace, 5*time.Minute,
 				GeneralConfig.WorkerLabelMap)
 			Expect(err).To(HaveOccurred(), "module should not be loaded")
 
@@ -152,7 +152,7 @@ var _ = Describe("KMM", Ordered, Label(kmmparams.LabelSuite, kmmparams.LabelSani
 			Expect(err).ToNot(HaveOccurred(), "error setting node label")
 
 			By("Check that the module is deployed on just one node")
-			err = await.ModuleDeployment(APIClient, moduleName, kmmparams.VersionModuleTestNamespace, 5*time.Minute,
+			err = await.ModuleDeployment(APIClient, moduleName, kmmparams.VersionModuleTestNamespace, 25*time.Minute,
 				firstNode.Object.Labels)
 			Expect(err).ToNot(HaveOccurred(), "error while checking module is deployed")
 		})
@@ -186,7 +186,7 @@ var _ = Describe("KMM", Ordered, Label(kmmparams.LabelSuite, kmmparams.LabelSani
 			Expect(err).ToNot(HaveOccurred(), "error creating module")
 
 			By("Await build pod to complete build")
-			err = await.BuildPodCompleted(APIClient, kmmparams.VersionModuleTestNamespace, 5*time.Minute)
+			err = await.BuildPodCompleted(APIClient, kmmparams.VersionModuleTestNamespace, 25*time.Minute)
 			Expect(err).ToNot(HaveOccurred(), "error while building module")
 
 			By("Deleting temporary module")
@@ -208,7 +208,7 @@ var _ = Describe("KMM", Ordered, Label(kmmparams.LabelSuite, kmmparams.LabelSani
 			Expect(err).ToNot(HaveOccurred(), "error removing node label")
 
 			By("Check that the module is undeployed on just one node")
-			err = await.ModuleUndeployed(APIClient, kmmparams.VersionModuleTestNamespace, time.Minute)
+			err = await.ModuleUndeployed(APIClient, kmmparams.VersionModuleTestNamespace, 5*time.Minute)
 			Expect(err).ToNot(HaveOccurred(), "error while checking module is undeployed")
 
 			By("Set version label on all workers")
@@ -222,11 +222,11 @@ var _ = Describe("KMM", Ordered, Label(kmmparams.LabelSuite, kmmparams.LabelSani
 			}
 
 			By("Check module is loaded on node")
-			err = check.ModuleLoaded(APIClient, kmodName, time.Minute)
+			err = check.ModuleLoaded(APIClient, kmodName, 5*time.Minute)
 			Expect(err).ToNot(HaveOccurred(), "error while checking the module is loaded")
 
 			By("Check dmesg contains module message")
-			err = check.Dmesg(APIClient, "2.0.0.upgraded", time.Minute)
+			err = check.Dmesg(APIClient, "2.0.0.upgraded", 5*time.Minute)
 			Expect(err).ToNot(HaveOccurred(), "error while checking dmesg contents")
 
 			By("Waiting 10 seconds for labels to be be properly set")

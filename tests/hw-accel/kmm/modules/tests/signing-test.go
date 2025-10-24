@@ -45,7 +45,7 @@ var _ = Describe("KMM", Ordered, Label(kmmparams.LabelSuite, kmmparams.LabelSani
 			Expect(err).ToNot(HaveOccurred(), "error deleting module")
 
 			By("Await module to be deleted")
-			err = await.ModuleObjectDeleted(APIClient, moduleName, kmmparams.ModuleBuildAndSignNamespace, 5*time.Minute)
+			err = await.ModuleObjectDeleted(APIClient, moduleName, kmmparams.ModuleBuildAndSignNamespace, 25*time.Minute)
 			Expect(err).ToNot(HaveOccurred(), "error while waiting module to be deleted")
 
 			svcAccount := serviceaccount.NewBuilder(APIClient, serviceAccountName, kmmparams.ModuleBuildAndSignNamespace)

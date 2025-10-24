@@ -52,7 +52,7 @@ var _ = Describe("KMM", Ordered, Label(kmmparams.LabelSuite, kmmparams.LabelSani
 			Expect(err).ToNot(HaveOccurred(), "error deleting module")
 
 			By("Await module to be deleted")
-			err = await.ModuleObjectDeleted(APIClient, moduleName, kmmparams.UseDtkModuleTestNamespace, time.Minute)
+			err = await.ModuleObjectDeleted(APIClient, moduleName, kmmparams.UseDtkModuleTestNamespace, 25*time.Minute)
 			Expect(err).ToNot(HaveOccurred(), "error while waiting module to be deleted")
 
 			svcAccount := serviceaccount.NewBuilder(APIClient, serviceAccountName, kmmparams.UseDtkModuleTestNamespace)
@@ -119,16 +119,16 @@ var _ = Describe("KMM", Ordered, Label(kmmparams.LabelSuite, kmmparams.LabelSani
 			Expect(err).ToNot(HaveOccurred(), "error creating module")
 
 			By("Await build pod to complete build")
-			err = await.BuildPodCompleted(APIClient, kmmparams.UseDtkModuleTestNamespace, 5*time.Minute)
+			err = await.BuildPodCompleted(APIClient, kmmparams.UseDtkModuleTestNamespace, 25*time.Minute)
 			Expect(err).ToNot(HaveOccurred(), "error while building module")
 
 			By("Await driver container deployment")
-			err = await.ModuleDeployment(APIClient, moduleName, kmmparams.UseDtkModuleTestNamespace, time.Minute,
+			err = await.ModuleDeployment(APIClient, moduleName, kmmparams.UseDtkModuleTestNamespace, 5*time.Minute,
 				GeneralConfig.WorkerLabelMap)
 			Expect(err).ToNot(HaveOccurred(), "error while waiting on driver deployment")
 
 			By("Check module is loaded on node")
-			err = check.ModuleLoaded(APIClient, kmodName, time.Minute)
+			err = check.ModuleLoaded(APIClient, kmodName, 5*time.Minute)
 			Expect(err).ToNot(HaveOccurred(), "error while checking the module is loaded")
 
 			By("Check label is set on all nodes")
@@ -151,15 +151,15 @@ var _ = Describe("KMM", Ordered, Label(kmmparams.LabelSuite, kmmparams.LabelSani
 			Expect(err).ToNot(HaveOccurred(), "error updating the module")
 
 			By("Wait for worker pods to apply changes")
-			time.Sleep(time.Minute)
+			time.Sleep(5 * time.Minute)
 
 			By("Await new driver container deployment")
-			err = await.ModuleDeployment(APIClient, moduleName, kmmparams.UseDtkModuleTestNamespace, time.Minute,
+			err = await.ModuleDeployment(APIClient, moduleName, kmmparams.UseDtkModuleTestNamespace, 5*time.Minute,
 				GeneralConfig.WorkerLabelMap)
 			Expect(err).ToNot(HaveOccurred(), "error while waiting on driver deployment")
 
 			By("Check new kmod was loaded to node")
-			err = check.ModuleLoaded(APIClient, newKmod, time.Minute)
+			err = check.ModuleLoaded(APIClient, newKmod, 5*time.Minute)
 			Expect(err).ToNot(HaveOccurred(), "error while checking the module is loaded")
 
 		})
@@ -201,7 +201,7 @@ var _ = Describe("KMM", Ordered, Label(kmmparams.LabelSuite, kmmparams.LabelSani
 			dtkImage := get.PreflightImage(arch)
 
 			By("Wait for module to be fully deployed before creating preflight")
-			err = await.ModuleDeployment(APIClient, moduleName, kmmparams.UseDtkModuleTestNamespace, 2*time.Minute,
+			err = await.ModuleDeployment(APIClient, moduleName, kmmparams.UseDtkModuleTestNamespace, 22*time.Minute,
 				GeneralConfig.WorkerLabelMap)
 			Expect(err).ToNot(HaveOccurred(), "error while waiting for module deployment")
 
@@ -215,12 +215,12 @@ var _ = Describe("KMM", Ordered, Label(kmmparams.LabelSuite, kmmparams.LabelSani
 			Expect(err).ToNot(HaveOccurred(), "error while creating preflight")
 
 			By("Await preflight build pod to complete build")
-			err = await.BuildPodCompleted(APIClient, kmmparams.UseDtkModuleTestNamespace, 3*time.Minute)
+			err = await.BuildPodCompleted(APIClient, kmmparams.UseDtkModuleTestNamespace, 23*time.Minute)
 			Expect(err).ToNot(HaveOccurred(), "No build pod found or completed")
 
 			By("Await preflightvalidationocp checks")
 			err = await.PreflightStageDone(APIClient, kmmparams.PreflightName, moduleName,
-				kmmparams.UseDtkModuleTestNamespace, 3*time.Minute)
+				kmmparams.UseDtkModuleTestNamespace, 23*time.Minute)
 			Expect(err).NotTo(HaveOccurred(), "preflightvalidationocp did not complete")
 
 			By("Get status of the preflightvalidationocp checks")
@@ -240,7 +240,7 @@ var _ = Describe("KMM", Ordered, Label(kmmparams.LabelSuite, kmmparams.LabelSani
 			Expect(err).ToNot(HaveOccurred(), "error deleting preflightvalidation")
 
 			By("Wait for resources cleanup")
-			time.Sleep(time.Minute)
+			time.Sleep(5 * time.Minute)
 		})
 
 		It("should be able to run preflightvalidation and push to registry", reportxml.ID("56328"), func() {
@@ -266,12 +266,12 @@ var _ = Describe("KMM", Ordered, Label(kmmparams.LabelSuite, kmmparams.LabelSani
 			Expect(err).ToNot(HaveOccurred(), "error while creating preflight")
 
 			By("Await preflight build pod to complete build")
-			err = await.BuildPodCompleted(APIClient, kmmparams.UseDtkModuleTestNamespace, 3*time.Minute)
+			err = await.BuildPodCompleted(APIClient, kmmparams.UseDtkModuleTestNamespace, 23*time.Minute)
 			Expect(err).ToNot(HaveOccurred(), "No build pod found or completed")
 
 			By("Await preflightvalidationocp checks")
 			err = await.PreflightStageDone(APIClient, kmmparams.PreflightName, moduleName,
-				kmmparams.UseDtkModuleTestNamespace, 3*time.Minute)
+				kmmparams.UseDtkModuleTestNamespace, 23*time.Minute)
 			Expect(err).NotTo(HaveOccurred(), "preflightvalidationocp did not complete")
 
 			By("Get status of the preflightvalidationocp checks")

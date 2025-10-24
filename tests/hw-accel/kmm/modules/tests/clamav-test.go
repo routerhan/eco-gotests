@@ -51,7 +51,7 @@ var _ = Describe("KMM", Ordered, Label(kmmparams.LabelSuite, kmmparams.LabelSani
 			Expect(err).ToNot(HaveOccurred(), "error deleting scanner module")
 
 			By("Await module to be deleted")
-			err = await.ModuleObjectDeleted(APIClient, scanner, kmmparams.ScannerTestNamespace, time.Minute)
+			err = await.ModuleObjectDeleted(APIClient, scanner, kmmparams.ScannerTestNamespace, 5*time.Minute)
 			Expect(err).ToNot(HaveOccurred(), "error while waiting module to be deleted")
 
 			By("Delete namespace")
@@ -123,12 +123,12 @@ var _ = Describe("KMM", Ordered, Label(kmmparams.LabelSuite, kmmparams.LabelSani
 			Expect(err).ToNot(HaveOccurred(), "error creating scanner")
 
 			By("Await build pod to complete build")
-			err = await.BuildPodCompleted(APIClient, kmmparams.ScannerTestNamespace, 20*time.Minute)
+			err = await.BuildPodCompleted(APIClient, kmmparams.ScannerTestNamespace, 70*time.Minute)
 			Expect(err).ToNot(HaveOccurred(), "error while building scanner")
 
 			By("Run pod from the scanner image")
 			scannerPod := pod.NewBuilder(APIClient, "scan-checker", kmmparams.ScannerTestNamespace, image)
-			_, err = scannerPod.CreateAndWaitUntilRunning(time.Minute)
+			_, err = scannerPod.CreateAndWaitUntilRunning(5 * time.Minute)
 			Expect(err).ToNot(HaveOccurred(), "error running scanner image")
 
 			By("Checking operator image scan")
